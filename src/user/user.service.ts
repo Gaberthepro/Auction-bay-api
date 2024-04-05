@@ -44,4 +44,9 @@ export class UserService {
   remove(id: number): Promise<{ affected?: number }> {
     return this.userRepository.delete(id);
   }
+
+  async getUser(email: string) {
+    const user = await this.userRepository.findOneBy({ email });
+    return user;
+  }
 }
