@@ -23,7 +23,7 @@ export class AppController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('protected')
+  @Get('me')
   logedinUser(@Request() req): string {
     return req.user;
   }
