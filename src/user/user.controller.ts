@@ -23,6 +23,7 @@ export class UserController {
 
   @Post('/signup')
   @UsePipes(ValidationPipe)
+  @HttpCode(201)
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
