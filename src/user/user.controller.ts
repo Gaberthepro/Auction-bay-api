@@ -8,6 +8,9 @@ import {
   Delete,
   UseGuards,
   Request,
+  HttpCode,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -19,6 +22,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('/signup')
+  @UsePipes(ValidationPipe)
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }

@@ -1,4 +1,6 @@
+import { IsNotEmpty } from 'class-validator';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
@@ -16,7 +18,6 @@ export class User {
   @Column({ type: 'varchar' })
   password: string;
 
-  @Column({ type: 'varchar'})
+  @Column({ type: 'varchar' })
   imgURl: string;
-
 }
