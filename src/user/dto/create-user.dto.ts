@@ -12,17 +12,15 @@ import {
 
 export class CreateUserDto {
   @IsString()
-  @MinLength(2, { message: 'Name must have atleast 2 characters.' })
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Please provide Name' })
   name: string;
 
   @IsString()
-  @MinLength(2, { message: 'Name must have atleast 2 characters.' })
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Please provide Surname' })
   surname: string;
 
   @IsNotEmpty()
-  @IsEmail(null, { message: 'Please provide valid Email.' })
+  @IsEmail({}, { message: 'Please provide valid Email.' })
   email: string;
 
   @IsNotEmpty()

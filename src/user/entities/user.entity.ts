@@ -1,5 +1,5 @@
-import { IsNotEmpty } from 'class-validator';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Auction } from 'src/auctions/entities/auction.entity';
 
 @Entity()
 export class User {
@@ -20,4 +20,8 @@ export class User {
 
   @Column({ type: 'varchar' })
   imgURl: string;
+
+  @OneToMany(() => Auction, auction => auction.user)
+  auction: Auction[];
+
 }
