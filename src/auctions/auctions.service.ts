@@ -50,16 +50,16 @@ export class AuctionsService {
   findOne(id: number) {
     const auction = this.auctionRepository.findOneBy({ id });
     if (!auction) {
-      throw new Error('Auction not found');
+      throw new NotFoundException('Auction not found');
     }
     return auction;
   }
 
   update(id: number, updateAuctionDto: UpdateAuctionDto) {
-    return `This action updates a #${id} auction`;
+    return this.auctionRepository.update(id, updateAuctionDto);
   }
 
   remove(id: number) {
-    return this.auctionRepository.delete({ id });
+    this.auctionRepository.delete({ id });
   }
 }
