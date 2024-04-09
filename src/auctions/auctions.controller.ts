@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { AuctionsService } from './auctions.service';
 import { CreateAuctionDto } from './dto/create-auction.dto';
 import { UpdateAuctionDto } from './dto/update-auction.dto';
@@ -17,7 +25,12 @@ export class AuctionsController {
     return this.auctionsService.findAll();
   }
 
-  @Get(':id')
+  @Get(':user_id')
+  findAllExceptYours(@Param('user_id') user_id: string) {
+    return this.auctionsService.findAllExceptYours(+user_id);
+  }
+
+  @Get('/one/:id')
   findOne(@Param('id') id: string) {
     return this.auctionsService.findOne(+id);
   }

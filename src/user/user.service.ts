@@ -49,4 +49,9 @@ export class UserService {
     const user = await this.userRepository.findOneBy({ email });
     return user;
   }
+
+  async GetUserbyid(id: number): Promise<number> {
+    const user = this.findOne(id);
+    return (await user).id;
+  }
 }
