@@ -1,4 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  ManyToMany,
+  UpdateDateColumn,
+} from 'typeorm';
 import { User } from 'src/user/entities/user.entity';
 
 @Entity()
@@ -13,7 +20,7 @@ export class Auction {
   description: string;
 
   @Column({ type: 'numeric' })
-  starting_price: number;
+  price: number;
 
   @Column({ type: 'timestamptz' })
   end_date: Date;
@@ -21,6 +28,10 @@ export class Auction {
   @Column({ type: 'varchar' })
   imgURl: string;
 
-  @ManyToOne(() => User, user => user.auction)
+  @ManyToOne(() => User, (user) => user.auction)
   user: User;
+
+  @ManyToMany(() => User, (user) => user.auction, { cascade: true })
+  users: User[];
+
 }

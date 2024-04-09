@@ -4,8 +4,6 @@ import { UpdateAuctionDto } from './dto/update-auction.dto';
 import { Auction } from './entities/auction.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from 'src/user/entities/user.entity';
-import { UserModule } from 'src/user/user.module';
 import { UserService } from 'src/user/user.service';
 
 @Injectable()
@@ -21,7 +19,7 @@ export class AuctionsService {
     const auction = new Auction();
     auction.title = title;
     auction.description = description;
-    auction.starting_price = starting_price;
+    auction.price = starting_price;
     auction.end_date = end_date;
     auction.imgURl = imgURl;
     const user = await this.userService.findOne(userId);

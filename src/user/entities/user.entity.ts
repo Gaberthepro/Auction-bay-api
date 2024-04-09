@@ -1,4 +1,11 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Auction } from 'src/auctions/entities/auction.entity';
 
 @Entity()
@@ -21,7 +28,10 @@ export class User {
   @Column({ type: 'varchar' })
   imgURl: string;
 
-  @OneToMany(() => Auction, auction => auction.user)
+  @OneToMany(() => Auction, (auction) => auction.user)
   auction: Auction[];
 
+  @ManyToMany(() => Auction, (auction) => auction.user, { cascade: true })
+  @JoinTable()
+  auctions: Auction[];
 }

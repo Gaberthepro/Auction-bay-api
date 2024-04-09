@@ -5,11 +5,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
+import { Auction } from 'src/auctions/entities/auction.entity';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(Auction)
+    private readonly auctionRepository: Repository<Auction>,
   ) {}
   async create(createUserDto: CreateUserDto): Promise<User> {
     const saltOrRounds = 10;
@@ -53,5 +56,9 @@ export class UserService {
   async GetUserbyid(id: number): Promise<number> {
     const user = this.findOne(id);
     return (await user).id;
+  }
+
+  async bidOnAuction(auction_id: number, users_id: number[]): Promise<User> {
+    return;
   }
 }
