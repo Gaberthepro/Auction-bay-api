@@ -42,7 +42,7 @@ export class AuctionsService {
     return auctions;
   }
 
-  findAll() {
+  findAll(): Promise<Auction[]> {
     const auctions = this.auctionRepository.find();
     return auctions;
   }
@@ -60,6 +60,6 @@ export class AuctionsService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} auction`;
+    return this.auctionRepository.delete({ id });
   }
 }
