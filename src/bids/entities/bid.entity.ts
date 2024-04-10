@@ -24,4 +24,7 @@ export class Bid {
 
   @ManyToOne(() => User, (user) => user.bid)
   user: User;
+
+  @Column({type: 'timestamptz'})
+  bid_date: Date;
 }

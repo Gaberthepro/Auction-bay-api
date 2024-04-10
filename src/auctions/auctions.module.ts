@@ -10,5 +10,6 @@ import { UserModule } from 'src/user/user.module';
   imports: [TypeOrmModule.forFeature([User, Auction]), UserModule],
   controllers: [AuctionsController],
   providers: [AuctionsService],
+  exports: [AuctionsService],
 })
 export class AuctionsModule {}
