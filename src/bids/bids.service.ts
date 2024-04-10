@@ -33,7 +33,8 @@ export class BidsService {
   }
 
   findAll() {
-    return `This action returns all bids`;
+    const bids = this.bidRepository.find({ relations: ['auction', 'user'] });
+    return bids;
   }
 
   findOne(id: number) {
