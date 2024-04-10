@@ -8,6 +8,8 @@ import { AuthModule } from './auth/auth.module';
 import { UserService } from './user/user.service';
 import { AuctionsModule } from './auctions/auctions.module';
 import { Auction } from './auctions/entities/auction.entity';
+import { BidsModule } from './bids/bids.module';
+import { Bid } from './bids/entities/bid.entity';
 
 @Module({
   imports: [
@@ -17,7 +19,7 @@ import { Auction } from './auctions/entities/auction.entity';
       port: 5432,
       password: 'gaber',
       username: 'postgres',
-      entities: [User, Auction],
+      entities: [User, Auction, Bid],
       database: 'auctionbay',
       synchronize: true,
       logging: true,
@@ -25,6 +27,7 @@ import { Auction } from './auctions/entities/auction.entity';
     UserModule,
     AuthModule,
     AuctionsModule,
+    BidsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

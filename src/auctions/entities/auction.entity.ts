@@ -5,8 +5,10 @@ import {
   ManyToOne,
   ManyToMany,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 import { User } from 'src/user/entities/user.entity';
+import { Bid } from 'src/bids/entities/bid.entity';
 
 @Entity()
 export class Auction {
@@ -20,7 +22,7 @@ export class Auction {
   description: string;
 
   @Column({ type: 'numeric' })
-  price: number;
+  starting_price: number;
 
   @Column({ type: 'timestamptz' })
   end_date: Date;
@@ -31,7 +33,6 @@ export class Auction {
   @ManyToOne(() => User, (user) => user.auction)
   user: User;
 
-  @ManyToMany(() => User, (user) => user.auction, { cascade: true })
-  users: User[];
-
+  @OneToMany(() => Bid, (bid) => bid.auction)
+  bid: Bid[];
 }

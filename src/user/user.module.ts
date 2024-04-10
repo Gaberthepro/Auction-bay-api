@@ -8,7 +8,7 @@ import { Auction } from 'src/auctions/entities/auction.entity';
 
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Auction])],
+  imports: [TypeOrmModule.forFeature([User])],
   controllers: [UserController],
   providers: [UserService],
   exports: [UserService],
