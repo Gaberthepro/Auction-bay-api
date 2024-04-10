@@ -31,7 +31,4 @@ export class User {
   @OneToMany(() => Auction, (auction) => auction.user)
   auction: Auction[];
 
-  @ManyToMany(() => Auction, (auction) => auction.user, { cascade: true })
-  @JoinTable()
-  auctions: Auction[];
 }

@@ -31,7 +31,5 @@ export class Auction {
   @ManyToOne(() => User, (user) => user.auction)
   user: User;
 
-  @ManyToMany(() => User, (user) => user.auction, { cascade: true })
-  users: User[];
 
 }
