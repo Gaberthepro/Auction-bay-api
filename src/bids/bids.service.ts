@@ -53,7 +53,7 @@ export class BidsService {
       },
       relations: ['auction', 'user'],
       order: {
-        bid_date: 'DESC',
+        price: 'DESC',
       },
     });
 

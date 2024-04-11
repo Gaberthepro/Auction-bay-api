@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { BidsService } from './bids.service';
 import { CreateBidDto } from './dto/create-bid.dto';
 import { UpdateBidDto } from './dto/update-bid.dto';
@@ -17,13 +25,9 @@ export class BidsController {
     return this.bidsService.findAll();
   }
 
-
-  
-
-
   @Get(':id')
   bidHistory(@Param('id') id: string) {
-    
+    return this.bidsService.findAllbyAuctionId(+id);
   }
 
   @Patch(':id')
