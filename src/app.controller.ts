@@ -17,6 +17,8 @@ import { AuctionsService } from './auctions/auctions.service';
 import { UpdateAuctionDto } from './auctions/dto/update-auction.dto';
 import { CreateBidDto } from './bids/dto/create-bid.dto';
 import { BidsService } from './bids/bids.service';
+import { NewPassowrd } from './interfaces/new_password';
+import { UserService } from './user/user.service';
 
 @Controller()
 export class AppController {
@@ -25,6 +27,7 @@ export class AppController {
     private readonly authService: AuthService,
     private readonly auctionsService: AuctionsService,
     private readonly bidsService: BidsService,
+    private readonly userService: UserService
   ) {}
 
   @Get()
@@ -42,6 +45,11 @@ export class AppController {
   @Get('me')
   logedinUser(@Request() req): string {
     return req.user;
+  }
+
+  @Put('me/update-password')
+  updatePassword(@Body() new_password_data:NewPassowrd ){
+    return this.userService.UpdatePassword(new_password_data)
   }
 
   @Post('/me/auction')
