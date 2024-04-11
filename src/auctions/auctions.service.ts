@@ -5,6 +5,7 @@ import { Auction } from './entities/auction.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserService } from 'src/user/user.service';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class AuctionsService {
@@ -19,7 +20,7 @@ export class AuctionsService {
     const auction = new Auction();
     auction.title = title;
     auction.description = description;
-    auction.price = starting_price;
+    auction.starting_price = starting_price;
     auction.end_date = end_date;
     auction.imgURl = imgURl;
     const user = await this.userService.findOne(userId);
@@ -59,5 +60,11 @@ export class AuctionsService {
 
   remove(id: number) {
     this.auctionRepository.delete({ id });
+  }
+
+  async updatePrice(id: number, new_price: number) {
+    const auction = await this.findOne(id);
+    auction.starting_price = new_price;
+    this.auctionRepository.update(id, auction)
   }
 }

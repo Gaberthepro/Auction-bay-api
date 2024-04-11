@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsString, IsNumber, isNotEmpty } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  IsNumber,
+  isNotEmpty,
+  IsDate,
+} from 'class-validator';
 export class CreateAuctionDto {
   @IsNotEmpty({ message: 'Please provide title' })
   @IsString()
@@ -9,10 +15,11 @@ export class CreateAuctionDto {
   description: string;
 
   @IsNotEmpty({ message: 'Please provide Starting price' })
-  @IsString()
+  @IsNumber()
   starting_price: number;
 
   @IsNotEmpty({ message: 'End date must be provided' })
+  @IsDate()
   end_date: Date;
 
   @IsNotEmpty({ message: 'Auction without image this is 100% bullshit' })
