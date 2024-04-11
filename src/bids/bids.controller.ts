@@ -15,9 +15,9 @@ import { UpdateBidDto } from './dto/update-bid.dto';
 export class BidsController {
   constructor(private readonly bidsService: BidsService) {}
 
-  @Post()
-  create(@Body() createBidDto: CreateBidDto) {
-    return this.bidsService.create(createBidDto);
+  @Post(':id')
+  create(@Body() createBidDto: CreateBidDto, @Param('id') auction_id:string) {
+    return this.bidsService.create(createBidDto, +auction_id );
   }
 
   @Get()

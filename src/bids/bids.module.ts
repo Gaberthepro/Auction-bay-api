@@ -9,8 +9,13 @@ import { UserModule } from 'src/user/user.module';
 import { AuctionsModule } from 'src/auctions/auctions.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Bid, User, Auction]), UserModule, AuctionsModule],
+  imports: [
+    TypeOrmModule.forFeature([Bid, User, Auction]),
+    UserModule,
+    AuctionsModule,
+  ],
   controllers: [BidsController],
   providers: [BidsService],
+  exports: [BidsService],
 })
 export class BidsModule {}

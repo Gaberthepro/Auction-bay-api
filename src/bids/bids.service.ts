@@ -14,9 +14,9 @@ export class BidsService {
     private readonly userService: UserService,
     private readonly auctionService: AuctionsService,
   ) {}
-  async create(createBidDto: CreateBidDto) {
+  async create(createBidDto: CreateBidDto, auctionId: number) {
     const bid = new Bid();
-    const { price, bid_date, userId, auctionId } = createBidDto;
+    const { price, bid_date, userId } = createBidDto;
     const user = await this.userService.findOne(userId);
     if (!user) {
       throw new NotFoundException('User not found');
