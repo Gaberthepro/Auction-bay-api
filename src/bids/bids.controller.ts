@@ -17,9 +17,13 @@ export class BidsController {
     return this.bidsService.findAll();
   }
 
+
+  
+
+
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.bidsService.findOne(+id);
+  bidHistory(@Param('id') id: string) {
+    
   }
 
   @Patch(':id')

@@ -29,11 +29,34 @@ export class BidsService {
     bid.bid_date = bid_date;
     bid.auction = auction;
     bid.user = user;
+
+    this.auctionService.updatePrice(auctionId, bid.price);
     return this.bidRepository.save(bid);
   }
 
   findAll() {
-    const bids = this.bidRepository.find({ relations: ['auction', 'user'] });
+    const bids = this.bidRepository.find({
+      relations: ['auction', 'user'],
+      order: {
+        price: 'DESC',
+      },
+    });
+    return bids;
+  }
+
+  findAllbyAuctionId(auction_id: number) {
+    const bids = this.bidRepository.find({
+      where: {
+        auction: {
+          id: auction_id,
+        },
+      },
+      relations: ['auction', 'user'],
+      order: {
+        bid_date: 'DESC',
+      },
+    });
+
     return bids;
   }
 

@@ -61,4 +61,10 @@ export class AuctionsService {
   remove(id: number) {
     this.auctionRepository.delete({ id });
   }
+
+  async updatePrice(id: number, new_price: number) {
+    const auction = await this.findOne(id);
+    auction.starting_price = new_price;
+    this.auctionRepository.update(id, auction)
+  }
 }
