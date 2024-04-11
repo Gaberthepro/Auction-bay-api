@@ -33,6 +33,8 @@ export class User {
   @OneToMany(() => Auction, (auction) => auction.user)
   auction: Auction[];
 
+
   @OneToMany(() => Bid, (bid) => bid.user)
   bid: Bid[];
+
 }

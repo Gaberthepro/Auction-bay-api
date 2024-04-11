@@ -33,6 +33,7 @@ export class Auction {
   @ManyToOne(() => User, (user) => user.auction)
   user: User;
 
+
   @OneToMany(() => Bid, (bid) => bid.auction)
   bid: Bid[];
 }
