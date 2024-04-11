@@ -3,10 +3,12 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Auction } from 'src/auctions/entities/auction.entity';
+import { Bid } from 'src/bids/entities/bid.entity';
 
 @Entity()
 export class User {
@@ -30,5 +32,6 @@ export class User {
 
   @OneToMany(() => Auction, (auction) => auction.user)
   auction: Auction[];
+
 
 }
