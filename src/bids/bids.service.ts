@@ -6,10 +6,11 @@ import {
 import { CreateBidDto } from './dto/create-bid.dto';
 import { UpdateBidDto } from './dto/update-bid.dto';
 import { Bid } from './entities/bid.entity';
-import { Repository } from 'typeorm';
+import { MoreThan, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserService } from 'src/user/user.service';
 import { AuctionsService } from 'src/auctions/auctions.service';
+import * as moment from 'moment';
 
 @Injectable()
 export class BidsService {
@@ -30,11 +31,24 @@ export class BidsService {
       throw new NotFoundException('Auction not found');
     }
 
+    if (moment(auction.end_date).isBefore(moment())) {
+      throw new BadRequestException('This auction is over', {
+        cause: new Error(),
+      });
+    }
+
+    if (auction.user.id == userId) {
+      throw new BadRequestException('You cannot bid on your own auction', {
+        cause: new Error(),
+      });
+    }
+
     if (price <= auction.starting_price) {
       throw new BadRequestException('You must bid more then current price', {
         cause: new Error(),
       });
     }
+
     bid.price = price;
     bid.bid_date = bid_date;
     bid.auction = auction;
@@ -83,10 +97,14 @@ export class BidsService {
   }
 
   async myBidding(user_id: number) {
+    const currentDate = moment().toDate();
     const myBids = this.bidRepository.find({
       where: {
         user: {
           id: user_id,
+        },
+        auction: {
+          end_date: MoreThan(currentDate),
         },
       },
       relations: ['auction'],

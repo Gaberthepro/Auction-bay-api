@@ -10,6 +10,4 @@ export class CreateBidDto {
   @IsNotEmpty()
   userId: number;
 
-  @IsNotEmpty()
-  auctionId: number;
 }

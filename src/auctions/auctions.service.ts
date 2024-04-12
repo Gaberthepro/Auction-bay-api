@@ -46,8 +46,12 @@ export class AuctionsService {
     return auctions;
   }
 
-  findOne(id: number) {
-    const auction = this.auctionRepository.findOneBy({ id });
+  async findOne(id: number) {
+    //const auction = this.auctionRepository.findOneBy({ id });
+    const auction = await this.auctionRepository.findOne({
+      where: { id },
+      relations: ["user"]
+    });
     if (!auction) {
       throw new NotFoundException('Auction not found');
     }
