@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateBidDto } from './dto/create-bid.dto';
 import { UpdateBidDto } from './dto/update-bid.dto';
 import { Bid } from './entities/bid.entity';
@@ -24,6 +28,12 @@ export class BidsService {
     const auction = await this.auctionService.findOne(auctionId);
     if (!auctionId) {
       throw new NotFoundException('Auction not found');
+    }
+
+    if (price <= auction.starting_price) {
+      throw new BadRequestException('You must bid more then current price', {
+        cause: new Error(),
+      });
     }
     bid.price = price;
     bid.bid_date = bid_date;
@@ -70,5 +80,48 @@ export class BidsService {
 
   remove(id: number) {
     return `This action removes a #${id} bid`;
+  }
+
+  async myBidding(user_id: number) {
+    const myBids = this.bidRepository.find({
+      where: {
+        user: {
+          id: user_id,
+        },
+      },
+      relations: ['auction'],
+      order: {
+        bid_date: 'DESC',
+      },
+    });
+    const uniqueBidsByAuction = (await myBids).reduce((acc, current) => {
+      const x = acc.find((item) => item.auction.id === current.auction.id);
+      if (!x) {
+        return acc.concat([current]);
+      } else {
+        return acc;
+      }
+    }, []);
+    const uniqueAuctions = uniqueBidsByAuction.map((bid) => bid.auction);
+    return uniqueAuctions;
+  }
+
+  async won(user_id: number) {
+    const highestBids = await this.bidRepository
+      .createQueryBuilder('bid')
+      .leftJoin('bid.auction', 'auction')
+      .select('MAX(bid.price)', 'price')
+      .addSelect('bid.auctionId')
+      .where('bid.userId = :userId', { userId: user_id })
+      .andWhere('auction.end_date < CURRENT_TIMESTAMP')
+      .groupBy('bid.auctionId')
+      .getRawMany();
+
+    const auctionIds = (await highestBids).map((bid) => bid.auctionId);
+    const auctionWinsPromises = auctionIds.map((auctionId) =>
+      this.auctionService.findOne(auctionId),
+    );
+    const auctionsWon = await Promise.all(auctionWinsPromises);
+    return auctionsWon;
   }
 }

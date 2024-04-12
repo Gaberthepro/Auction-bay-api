@@ -42,7 +42,7 @@ export class AuctionsService {
   }
 
   findAll(): Promise<Auction[]> {
-    const auctions = this.auctionRepository.find();
+    const auctions = this.auctionRepository.find({ relations: ['user'] });
     return auctions;
   }
 
@@ -65,6 +65,21 @@ export class AuctionsService {
   async updatePrice(id: number, new_price: number) {
     const auction = await this.findOne(id);
     auction.starting_price = new_price;
-    this.auctionRepository.update(id, auction)
+    this.auctionRepository.update(id, auction);
+  }
+
+  async myAuctions(user_id: number) {
+    const myAuctions = this.auctionRepository.find({
+      where: {
+        user: {
+          id: user_id,
+        },
+      },
+      relations: ['user'],
+      order: {
+        end_date: 'DESC',
+      },
+    });
+    return myAuctions;
   }
 }

@@ -1,10 +1,10 @@
 import { IsNotEmpty, IsString, IsNumber, IsDate } from 'class-validator';
 export class CreateBidDto {
   @IsNumber()
-  @IsNotEmpty({ message: 'Make a price' })
+  @IsNotEmpty({ message: 'Bid on new price' })
   price: number;
 
-  @IsDate()
+  @IsNotEmpty()
   bid_date: Date;
 
   @IsNotEmpty()

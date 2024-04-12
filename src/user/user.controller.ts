@@ -11,11 +11,13 @@ import {
   HttpCode,
   UsePipes,
   ValidationPipe,
+  Put,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { LocalAuthGuard } from 'src/auth/local.auth.guard';
+import { NewImg } from 'src/interfaces/new_img';
 
 @Controller('user')
 export class UserController {
@@ -41,6 +43,11 @@ export class UserController {
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(+id, updateUserDto);
+  }
+
+  @Put('update-profile-img')
+  updateProfileImage(@Body() newProfileImage: NewImg) {
+    return this.userService.UpdateImg(newProfileImage);
   }
 
   @Delete(':id')

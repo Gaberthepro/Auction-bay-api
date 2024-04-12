@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -7,6 +7,7 @@ import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { Auction } from 'src/auctions/entities/auction.entity';
 import { NewPassowrd } from 'src/interfaces/new_password';
+import { NewImg } from 'src/interfaces/new_img';
 
 @Injectable()
 export class UserService {
@@ -20,7 +21,8 @@ export class UserService {
     user.surname = createUserDto.surname;
     user.email = createUserDto.email;
     user.password = await bcrypt.hash(createUserDto.password, saltOrRounds);
-    user.imgURl = '';
+    user.imgURl =
+      'https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?size=338&ext=jpg&ga=GA1.1.1700460183.1712880000&semt=ais';
     return this.userRepository.save(user);
   }
 
@@ -34,11 +36,19 @@ export class UserService {
 
   update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     const user: User = new User();
+    if (
+      updateUserDto.name == '' ||
+      updateUserDto.surname == '' ||
+      updateUserDto.email == ''
+    ) {
+      throw new BadRequestException(
+        'Name, Surname and Email must be provided',
+        { cause: new Error() },
+      );
+    }
     user.name = updateUserDto.name;
     user.surname = updateUserDto.surname;
     user.email = updateUserDto.email;
-    user.password = updateUserDto.password;
-    user.imgURl = updateUserDto.imgURl;
     user.id = id;
     return this.userRepository.save(user);
   }
@@ -66,7 +76,9 @@ export class UserService {
       user.password,
     );
     if (!passwordValid) {
-      throw new Error('This is not your password');
+      throw new BadRequestException('This is not your password', {
+        cause: new Error(),
+      });
     } else {
       const saltOrRounds = 10;
       user.password = await bcrypt.hash(
@@ -75,5 +87,11 @@ export class UserService {
       );
       return this.userRepository.save(user);
     }
+  }
+
+  async UpdateImg(newImg: NewImg) {
+    const user = await this.findOne(newImg.user_id);
+    user.imgURl = newImg.imgUrl;
+    return this.userRepository.update(newImg.user_id, user);
   }
 }

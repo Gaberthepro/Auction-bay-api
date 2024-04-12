@@ -31,6 +31,11 @@ export class AuctionsController {
     return this.auctionsService.findAllExceptYours(+user_id);
   }
 
+  @Get('me/:user_id')
+  myAuctions(@Param('user_id') user_id: string) {
+    return this.auctionsService.myAuctions(+user_id);
+  }
+
   @Get('/one/:id')
   findOne(@Param('id') id: string) {
     return this.auctionsService.findOne(+id);

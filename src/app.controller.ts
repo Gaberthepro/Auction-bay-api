@@ -7,6 +7,8 @@ import {
   Request,
   UseGuards,
   Put,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { LocalAuthGuard } from './auth/local.auth.guard';
@@ -53,6 +55,7 @@ export class AppController {
   }
 
   @Post('/me/auction')
+  @UsePipes(ValidationPipe)
   PostAuction(@Body() createAuctionDto: CreateAuctionDto) {
     return this.auctionsService.create(createAuctionDto);
   }
@@ -66,6 +69,7 @@ export class AppController {
   }
 
   @Post('/auctions/:id/bid')
+  @UsePipes(ValidationPipe)
   BidOnAuction(
     @Body() createBidDto: CreateBidDto,
     @Param('id') auction_id: string,

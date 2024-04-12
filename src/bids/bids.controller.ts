@@ -16,8 +16,8 @@ export class BidsController {
   constructor(private readonly bidsService: BidsService) {}
 
   @Post(':id')
-  create(@Body() createBidDto: CreateBidDto, @Param('id') auction_id:string) {
-    return this.bidsService.create(createBidDto, +auction_id );
+  create(@Body() createBidDto: CreateBidDto, @Param('id') auction_id: string) {
+    return this.bidsService.create(createBidDto, +auction_id);
   }
 
   @Get()
@@ -38,5 +38,15 @@ export class BidsController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.bidsService.remove(+id);
+  }
+
+  @Get('me/bidding/:id')
+  bidding(@Param('id') user_id: string) {
+    return this.bidsService.myBidding(+user_id);
+  }
+
+  @Get('me/won/:id')
+  won(@Param('id') user_id: string) {
+    return this.bidsService.won(+user_id);
   }
 }
