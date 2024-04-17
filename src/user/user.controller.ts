@@ -40,6 +40,11 @@ export class UserController {
     return this.userService.findOne(+id);
   }
 
+  @Get('user_data/:id')
+  findOneDontShowPassword(@Param('id') id: string) {
+    return this.userService.findOneExceptPassword(+id);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(+id, updateUserDto);

@@ -34,6 +34,14 @@ export class UserService {
     return this.userRepository.findOneBy({ id });
   }
 
+  findOneExceptPassword(id: number): Promise<User> {
+    return this.userRepository
+      .createQueryBuilder('user')
+      .select(['user.name', 'user.surname', 'user.email', 'user.imgURl'])
+      .where('user.id = :id', { id })
+      .getOne();
+  }
+
   update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     const user: User = new User();
     if (
@@ -69,8 +77,6 @@ export class UserService {
 
   async UpdatePassword(new_passowrd_data: NewPassowrd) {
     const user = await this.findOne(new_passowrd_data.user_id);
-
-    console.log(new_passowrd_data.old_password);
     const passwordValid = await bcrypt.compare(
       new_passowrd_data.old_password,
       user.password,

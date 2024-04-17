@@ -19,7 +19,6 @@ export class CreateAuctionDto {
   starting_price: number;
 
   @IsNotEmpty({ message: 'End date must be provided' })
-  @IsDate()
   end_date: Date;
 
   @IsNotEmpty({ message: 'Auction without image this is 100% bullshit' })
