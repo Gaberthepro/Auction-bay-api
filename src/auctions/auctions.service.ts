@@ -48,10 +48,16 @@ export class AuctionsService {
 
   async findOne(id: number) {
     //const auction = this.auctionRepository.findOneBy({ id });
-    const auction = await this.auctionRepository.findOne({
+    /*const auction = await this.auctionRepository.findOne({
       where: { id },
       relations: ["user"]
-    });
+    });*/
+    const auction = await this.auctionRepository
+      .createQueryBuilder('auction')
+      .leftJoinAndSelect('auction.user', 'user')
+      .select(['auction', 'user.id'])
+      .where('auction.id = :id', { id: id })
+      .getOne();
     if (!auction) {
       throw new NotFoundException('Auction not found');
     }
