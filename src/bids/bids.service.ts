@@ -43,7 +43,9 @@ export class BidsService {
       });
     }
 
-    if (price <= auction.starting_price) {
+    const firstPrice = (await this.findAllbyAuctionId(auctionId)).length;
+
+    if (price <= auction.starting_price && firstPrice != 0) {
       throw new BadRequestException('You must bid more then current price', {
         cause: new Error(),
       });
@@ -86,6 +88,16 @@ export class BidsService {
 
   findOne(id: number) {
     return `This action returns a #${id} bid`;
+  }
+
+  findOneByAuctionID(auction_id: number) {
+    return this.bidRepository.find({
+      where: {
+        auction: {
+          id: auction_id,
+        },
+      },
+    });
   }
 
   update(id: number, updateBidDto: UpdateBidDto) {

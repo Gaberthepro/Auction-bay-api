@@ -5,13 +5,15 @@ import { Auction } from './entities/auction.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserService } from 'src/user/user.service';
-import { User } from 'src/user/entities/user.entity';
+import { Bid } from 'src/bids/entities/bid.entity';
 
 @Injectable()
 export class AuctionsService {
   constructor(
     @InjectRepository(Auction)
     private readonly auctionRepository: Repository<Auction>,
+    @InjectRepository(Bid)
+    private readonly bidRepository: Repository<Bid>,
     private readonly userService: UserService,
   ) {}
   async create(createAuctionDto: CreateAuctionDto) {
@@ -68,7 +70,12 @@ export class AuctionsService {
     return this.auctionRepository.update(id, updateAuctionDto);
   }
 
-  remove(id: number) {
+  async remove(id: number) {
+    await this.bidRepository.delete({
+      auction: {
+        id: id,
+      },
+    });
     this.auctionRepository.delete({ id });
   }
 
