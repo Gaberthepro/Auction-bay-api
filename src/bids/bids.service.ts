@@ -121,7 +121,7 @@ export class BidsService {
       },
       relations: ['auction'],
       order: {
-        bid_date: 'DESC',
+        bid_date: 'ASC',
       },
     });
     const uniqueBidsByAuction = (await myBids).reduce((acc, current) => {

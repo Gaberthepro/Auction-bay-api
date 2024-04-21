@@ -38,7 +38,8 @@ export class AuctionsService {
     const auctions = this.auctionRepository
       .createQueryBuilder('auction')
       .where('auction.userId != :userId', { userId: user_id })
-      .orderBy('auction.end_date', 'DESC')
+      .andWhere('auction.end_date > NOW()')
+      .orderBy('auction.end_date', 'ASC')
       .getMany();
     return auctions;
   }
@@ -94,7 +95,7 @@ export class AuctionsService {
       },
       relations: ['user'],
       order: {
-        end_date: 'DESC',
+        end_date: 'ASC',
       },
     });
     return myAuctions;
